@@ -164,9 +164,13 @@ private:
                         .uuid = const_cast<ble_uuid_t*>(&CHR_UUID.u),
                         .access_cb = _chrAccess,
                         .arg = &BLEHello::instance(),
+                        .descriptors = nullptr,
                         .flags = BLE_GATT_CHR_F_READ,
+                        .min_key_size = 0,
+                        .val_handle = nullptr,
+                        .cpfd = {},
                 },
-                { 0 } // end
+                {} // end
         };
         return chrs;
     }
@@ -205,7 +209,7 @@ extern "C" void app_main(void) {
         ESP_ERROR_CHECK(nvs_flash_init());
     }
 
-    ESP_ERROR_CHECK(esp_nimble_hci_and_controller_init());
+    ESP_ERROR_CHECK(esp_nimble_hci_init());
     nimble_port_init();
 
     // Configure BLE host
